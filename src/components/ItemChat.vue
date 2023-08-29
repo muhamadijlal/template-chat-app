@@ -1,12 +1,12 @@
+<script setup>
+import Avatar from "@/components/Avatar.vue";
+</script>
+
 <template>
   <div
     class="w-full py-1 px-2 flex items-center gap-3 h-20 hover:bg-slate-100 rounded-lg"
   >
-    <img
-      src="https://ui-avatars.com/api/?background=random"
-      alt="logo"
-      class="rounded-full w-12"
-    />
+    <Avatar :class="'rounded-full w-12'" />
 
     <div class="w-4/5 h-full flex flex-col justify-center -space-y-1">
       <h4 class="text-lg font-semibold text-slate-800">Muhamad haidar ijlal</h4>

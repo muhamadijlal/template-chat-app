@@ -1,6 +1,10 @@
+<script setup>
+import Avatar from "@/components/Avatar.vue";
+</script>
+
 <template>
   <aside
-    class="slide-over-shadow h-full right-0 fixed border-r backdrop-blur-sm bg-slate-800/50 overflow-y-auto"
+    class="slide-over-shadow fixed h-full right-0 backdrop-blur-sm bg-slate-800/50 overflow-y-auto"
   >
     <div class="bg-white absolute right-0 w-96 h-full p-8">
       <div class="flex items-center justify-between">
@@ -13,11 +17,7 @@
         </button>
       </div>
 
-      <img
-        src="https://ui-avatars.com/api/?background=random"
-        alt="logo"
-        class="rounded-full w-40 mt-10 mb-20 mx-auto"
-      />
+      <Avatar :class="'rounded-full w-40 mt-10 mb-20 mx-auto'" />
 
       <div class="space-y-5">
         <div>
@@ -31,7 +31,7 @@
       </div>
 
       <button
-        class="mx-auto w-full rounded-lg py-2 border border-red-500 text-red-500 text-xl hover:bg-red-50 mt-48"
+        class="button-x m-auto absolute bottom-20 right-4 rounded-lg py-2 border border-red-500 text-red-500 text-xl hover:bg-red-50"
       >
         Logout
       </button>
@@ -42,5 +42,8 @@
 <style scoped>
 .slide-over-shadow {
   width: calc(100% - 384px);
+}
+.button-x {
+  width: calc(100% - 2rem);
 }
 </style>
