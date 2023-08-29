@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid place-content-center h-full fixed conversation-width place-items-center ml-96 space-y-2 bg-slate-50 box-border"
+    class="grid place-content-center h-full fixed conversation-x place-items-center ml-96 space-y-2 bg-slate-50 box-border"
   >
     <font-awesome-icon
       :icon="['far', 'message']"
@@ -11,7 +11,7 @@
 </template>
 
 <style scooped>
-.conversation-width {
+.conversation-x {
   width: calc(100% - 384px);
 }
 </style>
