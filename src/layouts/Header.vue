@@ -1,5 +1,13 @@
 <script setup>
 import Avatar from "@/components/Avatar.vue";
+import SlideOver from "@/layouts/SlideOver.vue";
+import { ref } from "vue";
+
+const isHidden = ref(true);
+
+const toggleProfile = () => {
+  return (isHidden.value = !isHidden.value);
+};
 </script>
 
 <template>
@@ -14,7 +22,11 @@ import Avatar from "@/components/Avatar.vue";
       <h3 class="text-2xl font-bold text-slate-800">Poernama</h3>
     </div>
     <div class="flex items-center gap-1 hover:cursor-pointer">
-      <Avatar :class="'rounded-full w-10'" />
+      <button @click="toggleProfile">
+        <Avatar :class="'rounded-full w-10'" />
+      </button>
     </div>
   </div>
+
+  <slide-over @clicked="toggleProfile" :isHidden="isHidden" />
 </template>
