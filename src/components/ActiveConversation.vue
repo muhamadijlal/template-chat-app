@@ -1,8 +1,8 @@
 <script setup>
-import LeftBubbleChat from "@/components/LeftBubbleChat.vue";
-import RightBubbleChat from "@/components/RightBubbleChat.vue";
-import InputChat from "@/components/InputChat.vue";
-import HeaderChat from "@/components/HeaderChat.vue";
+import LeftBubbleChat from "@/components/chat/LeftBubbleChat.vue";
+import RightBubbleChat from "@/components/chat/RightBubbleChat.vue";
+import InputChat from "@/components/chat/InputChat.vue";
+import HeaderChat from "@/components/chat/HeaderChat.vue";
 
 const emit = defineEmits(["closeChat"]);
 

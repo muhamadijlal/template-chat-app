@@ -1,6 +1,6 @@
 <script setup>
-import ItemChat from "@/components/ItemChat.vue";
-import FilterChat from "@/components/FilterChat.vue";
+import ItemChat from "@/components/chat/ItemChat.vue";
+import FilterChat from "@/components/chat/FilterChat.vue";
 </script>
 
 <template>
