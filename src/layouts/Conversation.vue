@@ -1,6 +1,6 @@
 <script setup>
-import DefaultConversation from "@/components/DefaultConversation.vue";
-import ActiveConversation from "@/components/ActiveConversation.vue";
+import DefaultConversation from "@/layouts/conversations/DefaultConversation.vue";
+import ActiveConversation from "@/layouts/conversations/ActiveConversation.vue";
 import { ref } from "vue";
 
 const open = ref(true);
