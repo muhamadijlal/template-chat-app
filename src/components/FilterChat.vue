@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-2 pr-5">
+  <div class="flex items-center gap-2 px-5">
     <div class="flex justify-start items-center relative w-full">
       <font-awesome-icon
         :icon="['fas', 'magnifying-glass']"
