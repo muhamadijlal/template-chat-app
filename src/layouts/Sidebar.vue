@@ -5,11 +5,11 @@ import FilterChat from "@/components/FilterChat.vue";
 
 <template>
   <aside
-    class="w-96 h-full pl-5 py-10 fixed border-r border-slate-300 bg-white z-50"
+    class="w-96 h-full py-10 fixed border-r border-slate-300 bg-white z-50"
   >
     <filter-chat />
 
-    <div class="my-5 space-y-2 overflow-auto sidebar-y">
+    <div class="my-5 space-y-2 overflow-y-auto sidebar-y">
       <item-chat v-for="index in 10" :key="index" />
     </div>
   </aside>
