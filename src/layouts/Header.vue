@@ -22,11 +22,11 @@ const toggleProfile = () => {
       <h3 class="text-2xl font-bold text-slate-800">Poernama</h3>
     </div>
     <div class="flex items-center gap-1 hover:cursor-pointer">
-      <button @click="toggleProfile" class="outline-none">
+      <button @click="toggleProfile()" class="outline-none">
         <Avatar :class="'rounded-full w-10'" />
       </button>
     </div>
   </div>
 
-  <slide-over @clicked="toggleProfile" :isHidden="isHidden" />
+  <slide-over @clicked="toggleProfile()" :isHidden="isHidden" />
 </template>

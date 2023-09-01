@@ -3,6 +3,7 @@ import Avatar from "@/components/Avatar.vue";
 defineProps({
   isHidden: Boolean,
 });
+defineEmits(["clicked"]);
 </script>
 
 <template>
