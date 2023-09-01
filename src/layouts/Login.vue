@@ -1,4 +1,66 @@
+<script setup>
+import axios from "axios";
+import { reactive } from "vue";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+import AlertError from "@/components/alerts/AlertError.vue";
+
+const router = useRouter();
+
+const auth = reactive({
+  loggedIn: localStorage.getItem("loggedIn"),
+  token: localStorage.getItem("token"),
+});
+
+const data = {
+  user: [],
+  validation: [],
+  loginFailed: null,
+};
+
+onMounted(() => {
+  if (auth.loggedIn) {
+    return router.push({ name: "dashboard" });
+  }
+});
+
+const login = () => {
+  if (data.user.email && data.user.password) {
+    axios.get("http://localhost:8000/sanctum/csrf-cookie");
+    axios
+      .post("http://localhost:8000/api/login", {
+        email: data.user.email,
+        password: data.user.password,
+      })
+      .then((resp) => {
+        //set localStorage
+        localStorage.setItem("loggedIn", "true");
+
+        //set localStorage Token
+        localStorage.setItem("token", resp.data.token);
+
+        //change state
+        auth.loggedIn = true;
+
+        //redirect dashboard
+        return router.push({ name: "dashboard" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  if (!data.user.email) {
+    data.validation.email = true;
+  }
+  if (!data.user.password) {
+    data.validation.password = true;
+  }
+};
+</script>
+
 <template>
+  <alert-error />
   <div class="flex flex-col h-screen justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img
