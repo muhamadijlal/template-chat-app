@@ -4,7 +4,8 @@
   >
     <input
       placeholder="Type a message"
-      class="border h-12 py-4 pl-5 w-full rounded-lg placeholder:text-slate-300 border-slate-300"
+      class="border py-4 pl-5 w-full rounded-lg placeholder:text-slate-300 border-slate-300"
+      autocomplete="false"
     />
     <button class="py-2 px-3 outline-none">
       <font-awesome-icon
@@ -14,3 +15,11 @@
     </button>
   </div>
 </template>
+
+<style>
+input[type="text"] {
+  word-wrap: break-word;
+  word-break: break-all;
+  height: 48px;
+}
+</style>
