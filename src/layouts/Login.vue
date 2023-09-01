@@ -1,11 +1,14 @@
 <script setup>
 import axios from "axios";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import AlertError from "@/components/alerts/AlertError.vue";
 
 const router = useRouter();
+
+const isLoading = ref(false);
+const loginFailed = ref(false);
 
 const auth = reactive({
   loggedIn: localStorage.getItem("loggedIn"),
@@ -14,8 +17,10 @@ const auth = reactive({
 
 const data = {
   user: [],
-  validation: [],
-  loginFailed: null,
+};
+
+const closeAlert = () => {
+  loginFailed.value = false;
 };
 
 onMounted(() => {
@@ -25,6 +30,8 @@ onMounted(() => {
 });
 
 const login = () => {
+  isLoading.value = true;
+
   if (data.user.email && data.user.password) {
     axios.get("http://localhost:8000/sanctum/csrf-cookie");
     axios
@@ -35,33 +42,27 @@ const login = () => {
       .then((resp) => {
         //set localStorage
         localStorage.setItem("loggedIn", "true");
-
         //set localStorage Token
         localStorage.setItem("token", resp.data.token);
-
         //change state
         auth.loggedIn = true;
-
         //redirect dashboard
         return router.push({ name: "dashboard" });
       })
       .catch((err) => {
-        console.log(err);
+        loginFailed.value = true;
+      })
+      .finally(() => {
+        isLoading.value = false;
       });
-  }
-
-  if (!data.user.email) {
-    data.validation.email = true;
-  }
-  if (!data.user.password) {
-    data.validation.password = true;
   }
 };
 </script>
 
 <template>
-  <alert-error />
-  <div class="flex flex-col h-screen justify-center px-6 py-12 lg:px-8">
+  <alert-error @close-alert="closeAlert()" :isError="loginFailed" />
+  <div v-if="isLoading">Loading...</div>
+  <div v-else class="flex flex-col h-screen justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img
         class="mx-auto h-24 w-auto"
@@ -76,7 +77,7 @@ const login = () => {
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
+      <form class="space-y-6" @submit.prevent="login">
         <div>
           <label
             for="email"
@@ -85,6 +86,7 @@ const login = () => {
           >
           <div class="mt-2">
             <input
+              v-model="data.user.email"
               id="email"
               name="email"
               type="email"
@@ -112,6 +114,7 @@ const login = () => {
           </div>
           <div class="mt-2">
             <input
+              v-model="data.user.password"
               id="password"
               name="password"
               type="password"
