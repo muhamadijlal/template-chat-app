@@ -1,67 +1,19 @@
 <script setup>
-import axios from "axios";
-import { reactive, ref } from "vue";
-import { onMounted } from "vue";
-import { useRouter } from "vue-router";
-import AlertError from "@/components/alerts/AlertError.vue";
+import AlertError from "@/ui/components/alerts/AlertError.vue";
 
-const router = useRouter();
+import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+import Loader from "@/ui/components/Loader.vue";
 
-const isLoading = ref(false);
-const loginFailed = ref(false);
-
-const auth = reactive({
-  loggedIn: localStorage.getItem("loggedIn"),
-  token: localStorage.getItem("token"),
-});
-
-const data = {
-  user: [],
-};
-
-const closeAlert = () => {
-  loginFailed.value = false;
-};
-
-onMounted(() => {
-  if (auth.loggedIn) {
-    return router.push({ name: "dashboard" });
-  }
-});
-
-const login = () => {
-  isLoading.value = true;
-
-  if (data.user.email && data.user.password) {
-    axios.get("http://localhost:8000/sanctum/csrf-cookie");
-    axios
-      .post("http://localhost:8000/api/login", {
-        email: data.user.email,
-        password: data.user.password,
-      })
-      .then((resp) => {
-        //set localStorage
-        localStorage.setItem("loggedIn", "true");
-        //set localStorage Token
-        localStorage.setItem("token", resp.data.token);
-        //change state
-        auth.loggedIn = true;
-        //redirect dashboard
-        return router.push({ name: "dashboard" });
-      })
-      .catch((err) => {
-        loginFailed.value = true;
-      })
-      .finally(() => {
-        isLoading.value = false;
-      });
-  }
-};
+const { loading, email, password, loginFailed } = storeToRefs(useAuthStore());
+const { login } = useAuthStore();
 </script>
 
 <template>
-  <alert-error @close-alert="closeAlert()" :isError="loginFailed" />
-  <div v-if="isLoading">Loading...</div>
+  <AlertError v-if="loginFailed" />
+
+  <Loader v-if="loading" />
+
   <div v-else class="flex flex-col h-screen justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img
@@ -86,12 +38,12 @@ const login = () => {
           >
           <div class="mt-2">
             <input
-              v-model="data.user.email"
               id="email"
               name="email"
               type="email"
               autocomplete="email"
               required
+              v-model="email"
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -114,12 +66,12 @@ const login = () => {
           </div>
           <div class="mt-2">
             <input
-              v-model="data.user.password"
               id="password"
               name="password"
               type="password"
               autocomplete="current-password"
               required
+              v-model="password"
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
             />
           </div>

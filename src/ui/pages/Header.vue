@@ -1,6 +1,6 @@
 <script setup>
-import Avatar from "@/components/Avatar.vue";
-import SlideOver from "@/layouts/SlideOver.vue";
+import Avatar from "@/ui/components/Avatar.vue";
+import SlideOver from "@/ui/pages/SlideOver.vue";
 import { ref } from "vue";
 
 const isHidden = ref(true);
