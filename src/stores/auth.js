@@ -13,8 +13,10 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
+    CLEAR() {
+      (this.email = ""), (this.password = "");
+    },
     SET_AUTHENTICATED(value) {
-      console.log(value);
       localStorage.setItem("authenticated", value);
       this.authenticated = value;
     },
@@ -39,26 +41,37 @@ export const useAuthStore = defineStore("auth", {
           console.log(response);
           this.SET_AUTHENTICATED(true);
           this.SET_TOKEN(response.data.token);
-          this.SET_USER(response.data.user);
+          // this.SET_USER(response.data.user);
         })
         .catch((err) => {
           console.log(err);
           this.SET_LOGINFAILED();
         })
         .finally(() => {
+          this.CLEAR();
           this.loading = false;
         });
 
-      // await fetchUser()
-      //   .then((response) => {
-      //     console.log(response);
-      //     this.SET_USER(response.data.user);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
       this.$router.push({ name: "dashboard" });
+    },
+
+    logout() {
+      this.SET_AUTHENTICATED(false);
+      this.SET_TOKEN("");
+      // this.SET_USER = {};
+
+      this.$router.push({ name: "login" });
+    },
+
+    getUser() {
+      fetchUser()
+        .then((response) => {
+          console.log(response);
+          this.SET_USER(response.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 });

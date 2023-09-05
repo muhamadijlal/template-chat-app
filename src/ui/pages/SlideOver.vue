@@ -1,5 +1,9 @@
 <script setup>
 import Avatar from "@/ui/components/Avatar.vue";
+import { useAuthStore } from "../../stores/auth";
+
+const { logout } = useAuthStore();
+
 defineProps({
   isHidden: Boolean,
 });
@@ -40,6 +44,7 @@ defineEmits(["clicked"]);
         <h5 class="text-slate-800 font-bold text-xl">Busy</h5>
       </div>
       <button
+        @click="logout()"
         class="w-full bottom-0 py-2 outline-none rounded-lg border-2 border-dashed border-red-500 text-red-500 text-xl hover:bg-red-50 hover:border-solid"
       >
         Logout

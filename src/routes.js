@@ -6,6 +6,10 @@ import { storeToRefs } from "pinia";
 
 const routes = [
   {
+    path: "/",
+    redirect: "/login",
+  },
+  {
     path: "/login",
     component: Login,
     name: "login",
@@ -31,6 +35,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { authenticated } = storeToRefs(useAuthStore());
+
   if (to.meta.middleware == "guest") {
     !authenticated.value ? next() : next({ name: "dashboard" });
   }
