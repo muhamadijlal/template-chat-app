@@ -1,21 +1,12 @@
 <script setup>
-import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
+import { computed } from "vue";
 
-const loggedIn = ref(null);
-const route = useRoute();
+const { IsAuthenticated } = useAuthStore();
 
-const getLoggedIn = () => {
-  loggedIn.value = localStorage.getItem("loggedIn");
-};
-
-watch(
-  route,
-  () => {
-    getLoggedIn();
-  },
-  { deep: true, immediate: true }
-);
+computed(() => {
+  IsLoggedIn: () => IsAuthenticated();
+});
 </script>
 
 <template>

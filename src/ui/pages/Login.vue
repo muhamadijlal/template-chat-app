@@ -1,16 +1,42 @@
 <script setup>
 import AlertError from "@/ui/components/alerts/AlertError.vue";
 
-import { useAuthStore } from "@/stores/auth";
-import { storeToRefs } from "pinia";
+import { reactive, ref } from "vue";
 import Loader from "@/ui/components/Loader.vue";
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
-const { loading, email, password, loginFailed } = storeToRefs(useAuthStore());
-const { login } = useAuthStore();
+// store
+const { LogIn } = useAuthStore();
+
+// setup
+const showError = ref(false);
+const loading = ref(false);
+const form = reactive({
+  email: "",
+  password: "",
+});
+
+const router = useRouter();
+
+// methods
+const submit = async () => {
+  loading.value = true;
+
+  try {
+    await LogIn(form);
+    router.push({ name: "dashboard" });
+  } catch (err) {
+    console.log(err);
+    showError.value = true;
+  }
+
+  loading.value = false;
+};
 </script>
 
 <template>
-  <AlertError v-if="loginFailed" />
+  <AlertError v-if="showError" />
 
   <Loader v-if="loading" />
 
@@ -29,7 +55,7 @@ const { login } = useAuthStore();
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" @submit.prevent="login">
+      <form class="space-y-6" @submit.prevent="submit">
         <div>
           <label
             for="email"
@@ -43,7 +69,7 @@ const { login } = useAuthStore();
               type="email"
               autocomplete="email"
               required
-              v-model="email"
+              v-model="form.email"
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -71,7 +97,7 @@ const { login } = useAuthStore();
               type="password"
               autocomplete="current-password"
               required
-              v-model="password"
+              v-model="form.password"
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
             />
           </div>

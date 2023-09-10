@@ -1,8 +1,8 @@
 import Login from "@/ui/pages/Login.vue";
 import DashboardChat from "@/ui/pages/DashboardChat.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "./stores/auth";
 
 const routes = [
   {
@@ -14,8 +14,7 @@ const routes = [
     component: Login,
     name: "login",
     meta: {
-      middleware: "guest",
-      title: "login",
+      guest: true,
     },
   },
   {
@@ -23,7 +22,7 @@ const routes = [
     component: DashboardChat,
     name: "dashboard",
     meta: {
-      middleware: "auth",
+      requiresAuth: true,
     },
   },
 ];
@@ -36,12 +35,27 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const { authenticated } = storeToRefs(useAuthStore());
 
-  if (to.meta.middleware == "guest") {
-    !authenticated.value ? next() : next({ name: "dashboard" });
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (authenticated.value) {
+      next();
+      return;
+    }
+    next("/login");
+  } else {
+    next();
   }
+});
 
-  if (to.meta.middleware == "auth") {
-    authenticated.value ? next() : next({ name: "login" });
+router.beforeEach((to, from, next) => {
+  const { authenticated } = storeToRefs(useAuthStore());
+  if (to.matched.some((record) => record.meta.guest)) {
+    if (authenticated.value) {
+      next("/dashboard");
+      return;
+    }
+    next();
+  } else {
+    next();
   }
 });
 
